@@ -11,8 +11,8 @@ const arr = [
 	"i/IAC.jpg",
 	"i/new-museum.jpg"
 ];
-
-var i = 0;
+currentPhoto.src = "i/breuer-building.jpg";
+var i = 1;
 function slider() {
 	currentPhoto.src = arr[i++];
 	if(i==arr.length) {

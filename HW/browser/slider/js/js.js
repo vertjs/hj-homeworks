@@ -11,7 +11,8 @@ const arr = [
 	"i/airmax.png"
 ];
 
-var i = 0;
+slider.src = "i/airmax-jump.png";
+var i = 1;
 function show() {
 	slider.src = arr[i++];
 	if(i == arr.length) {
