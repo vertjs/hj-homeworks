@@ -1,18 +1,13 @@
 'use strict';
 
 const btns = document.getElementsByTagName('li');
-//const audio = btns.getElementsByTagName('audio')
 
-
-
-
-function playing(au) {
-	this.play()
+function show() {
+	this.getElementsByTagName('audio')[0].pause();
+	this.getElementsByTagName('audio')[0].currentTime = 0; 
+	console.log(this.getElementsByTagName('audio')[0].play());
 }
 
 for(var b of btns) {
-	b.onclick = () => {
-	b.getElementsByTagName('audio')[0].play();
-	console.log(b.getElementsByTagName('audio')[0])
-}
+	b.onclick = show;
 }
