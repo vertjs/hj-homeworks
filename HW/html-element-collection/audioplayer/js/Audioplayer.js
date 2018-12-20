@@ -28,15 +28,12 @@ const back = document.getElementsByClassName('back')[0];
 const next = document.getElementsByClassName('next')[0];
 const title = document.getElementsByClassName('title')[0];
 const stop = document.getElementsByClassName('stop')[0];
-var help = true;
 
 playstate.onclick = function () {
 	 if (audio.paused) {
 	 	audio.play();
-	 	help = true;
 	 } else {
 	 	audio.pause();
-	 	help = false;
 	 }
 	audio.paused ? mediaplayer.classList.remove('play') : mediaplayer.classList.add('play');
 };
@@ -44,21 +41,26 @@ playstate.onclick = function () {
 var i = 0;
 var n = 0;
 back.onclick = function () {
-	if(i == 0 || n == 0) {
-		i = arr.length;
-		n = arr2.length;
-	}
-	i--;
-	audio.src = arr[i];
+	if(!audio.paused) {
+		if(i == 0 || n == 0) {
+			i = arr.length;
+			n = arr2.length;
+		}
+		i--;
+		audio.src = arr[i];
 
-	n--;
-	title.title = arr2[n];
-	console.log(n)
+		n--;
+		title.title = arr2[n];
 
-	if(help = true) {
+
 		audio.play();
 		mediaplayer.classList.add('play');
 	} else {
+		if(n == 0) {
+			n = arr2.length;
+		}
+		n--;
+		title.title = arr2[n];
 		audio.pause();
 		mediaplayer.classList.remove('play');
 	}
@@ -67,27 +69,30 @@ back.onclick = function () {
 var k = 0;
 var z = 0;
 next.onclick = function() {
-	if(k == arr.length-1) {
-		k = -1;
-		z = -1;
-	}
-	k++;
-	audio.src = arr[k];
-
-	z++;
-	title.title = arr2[z];
-
-	if(help) {
+	if(audio.paused) {
+		if(z == arr.length-1) {
+			z = -1;
+		}
+		z++;
+		title.title = arr2[z];
+		audio.pause();
+		mediaplayer.classList.remove('play');		
+	} else {
+		if(k == arr.length-1) {
+			k = -1;
+			z = -1;
+		}
+		k++;
+		audio.src = arr[k];
 		audio.play();
 		mediaplayer.classList.add('play');
-	} else {
-		audio.pause();
-		mediaplayer.classList.remove('play');
-	}
+		z++;
+		title.title = arr2[z];
+		}
 };
 
 stop.onclick = function() {
-	if(help) {
+	if(!audio.paused) {
 		audio.pause();
 		audio.currentTime = 0;
 		mediaplayer.classList.remove('play');
