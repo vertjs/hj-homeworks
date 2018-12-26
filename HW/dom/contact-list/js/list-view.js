@@ -5,15 +5,17 @@ function loadContacts() {
 }
 
 function list() {
-  var pars = JSON.parse(loadContacts());
   const contacts_list = document.getElementsByClassName('contacts-list')[0];
+  const primer = document.querySelector('li');
+  primer.remove();
+  var pars = JSON.parse(loadContacts());
 
   for (var i = 0; i < pars.length; i++) {
     const li = document.createElement('li');
-    const span = document.createElement('span');
+    const strong = document.createElement('strong');
     const cont = contacts_list.appendChild(li);
-    li.appendChild(span);
-    span.textContent = pars[i].name;
+    li.appendChild(strong);
+    strong.textContent = pars[i].name;
     li.dataset.email = pars[i].email;
     li.dataset.phone = pars[i].phone;
   }
