@@ -8,9 +8,13 @@ function list() {
   const contacts_list = document.getElementsByClassName('contacts-list')[0];
   const primer = document.querySelector('li');
   primer.remove();
-  var pars = JSON.parse(loadContacts());
-
-  for (var i = 0; i < pars.length; i++) {
+  try {
+    var pars = JSON.parse(loadContacts());
+  }
+  catch (err) {
+   console.log(`Возникла ошибка: ${err}`);
+  }
+  for (let i = 0; i < pars.length; i++) {
     const li = document.createElement('li');
     const strong = document.createElement('strong');
     const cont = contacts_list.appendChild(li);

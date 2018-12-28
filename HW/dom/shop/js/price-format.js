@@ -6,23 +6,23 @@ function getPriceFormatted(value) {
 document.addEventListener('DOMContentLoaded', load);
 
 function load(event) {
-  var sumPrice = document.getElementById('cart-total-price');
-  var sumCart = document.getElementById('cart-count');
-  var btns = document.getElementsByClassName('add');
-  var arr = Array.from(btns)
-  for (var key of arr) {
+  const sumPrice = document.getElementById('cart-total-price');
+  const sumCart = document.getElementById('cart-count');
+  const btns = document.getElementsByClassName('add');
+  const arr = Array.from(btns)
+  for (let key of arr) {
     key.addEventListener('click', replenishment);
   }
 
-  var price = 0;
-  var n = 0;
+  let price = 0;
+  let n = 0;
 
   function replenishment(event) {
     n++;
-    var num = this.getAttribute('data-price');
+    let num = this.getAttribute('data-price');
     price += Number(num);
-    sumPrice.textContent = price;
-    sumCart.textContent = n;
+    sumPrice.textContent = getPriceFormatted(price);
+    sumCart.textContent = getPriceFormatted(n);
   }
 
 };
