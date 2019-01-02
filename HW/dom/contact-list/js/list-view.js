@@ -1,27 +1,27 @@
 let container;
 
 function loadContacts() {
-  return '[{"name":"Василий Николаев","email":"vnikola9999@gmail.com","phone":"+7 999 777 34 34"},{"name":"Елена Вишневская","email":"lenochka22333@yandex.ru","phone":"+7 888 777 11 11"},{"name":"Артём Кузнецов","email":"kuznya_foreva@gmail.com","phone":"+7 222 555 76 67"},{"name":"Алексей Гусенко","email":"jiznboliyaetoznayu@mail.com","phone":"+7 333 545 12 34"},{"name":"Маргарита Сотникова","email":"pobeditelnicapojizni111@gmail.com","phone":"+7 323 534 32 12"}]';
+  try {
+      var pars = JSON.parse('[{"name":"Василий Николаев","email":"vnikola9999@gmail.com","phone":"+7 999 777 34 34"},{"name":"Елена Вишневская","email":"lenochka22333@yandex.ru","phone":"+7 888 777 11 11"},{"name":"Артём Кузнецов","email":"kuznya_foreva@gmail.com","phone":"+7 222 555 76 67"},{"name":"Алексей Гусенко","email":"jiznboliyaetoznayu@mail.com","phone":"+7 333 545 12 34"},{"name":"Маргарита Сотникова","email":"pobeditelnicapojizni111@gmail.com","phone":"+7 323 534 32 12"}]');
+      return pars;
+  }catch (err) {
+      console.log(`Возникла ошибка: ${err}`);
+  }
 }
 
 function list() {
   const contacts_list = document.getElementsByClassName('contacts-list')[0];
   const primer = document.querySelector('li');
   primer.remove();
-  try {
-    var pars = JSON.parse(loadContacts());
-  }
-  catch (err) {
-   console.log(`Возникла ошибка: ${err}`);
-  }
-  for (let i = 0; i < pars.length; i++) {
+
+  for (let i = 0; i < loadContacts().length; i++) {
     const li = document.createElement('li');
     const strong = document.createElement('strong');
     const cont = contacts_list.appendChild(li);
     li.appendChild(strong);
-    strong.textContent = pars[i].name;
-    li.dataset.email = pars[i].email;
-    li.dataset.phone = pars[i].phone;
+    strong.textContent = loadContacts()[i].name;
+    li.dataset.email = loadContacts()[i].email;
+    li.dataset.phone = loadContacts()[i].phone;
   }
 };
 
