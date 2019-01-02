@@ -6,22 +6,23 @@ function loadContacts() {
       return pars;
   }catch (err) {
       console.log(`Возникла ошибка: ${err}`);
+      return null;
   }
 }
 
-function list() {
+function list(contacts) {
   const contacts_list = document.getElementsByClassName('contacts-list')[0];
   const primer = document.querySelector('li');
   primer.remove();
 
-  for (let i = 0; i < loadContacts().length; i++) {
+  for (let i = 0; i < contacts.length; i++) {
     const li = document.createElement('li');
     const strong = document.createElement('strong');
     const cont = contacts_list.appendChild(li);
     li.appendChild(strong);
-    strong.textContent = loadContacts()[i].name;
-    li.dataset.email = loadContacts()[i].email;
-    li.dataset.phone = loadContacts()[i].phone;
+    strong.textContent = contacts[i].name;
+    li.dataset.email = contacts[i].email;
+    li.dataset.phone = contacts[i].phone;
   }
 };
 
@@ -57,4 +58,5 @@ function init() {
 }
 
 document.addEventListener('DOMContentLoaded', init);
-document.addEventListener('DOMContentLoaded', list);
+document.addEventListener('DOMContentLoaded', function(){
+    list(loadContacts())});
