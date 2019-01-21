@@ -8,12 +8,9 @@ const undone = document.querySelector('.undone');
 
 
 function toggleChecked(event) {
-  event.target.toggleAttribute("checked");
-  if(event.target.parentElement.parentElement.className === 'done') {
+  if(!event.target.checked) {
     undone.appendChild(event.target.parentElement)
-    console.log('undone')
-  } else if(event.target.parentElement.parentElement.className === 'undone') {
+  } else if(event.target.checked) {
     done.appendChild(event.target.parentElement)
-    console.log('done')
-  };
-}
+  }
+};
