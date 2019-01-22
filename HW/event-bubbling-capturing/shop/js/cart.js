@@ -1,6 +1,6 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', loaded);
+/*document.addEventListener('DOMContentLoaded', loaded);
 
 function loaded(event) {
   const but = document.querySelectorAll('.add-to-cart');
@@ -14,4 +14,7 @@ function loaded(event) {
 showMore.addEventListener('click', event => {
   event.preventDefault();
   loaded(event)
-});
+});*/
+
+const itemsList = document.querySelector('.items-list');
+itemsList.addEventListener('click', event => addToCart(itemsList))
