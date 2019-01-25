@@ -7,7 +7,7 @@ xhr.addEventListener('load', onLoad);
 
 function onLoad() {
   var result = JSON.parse(xhr.response)
-  var item = document.querySelector('#colorSwatch > div');
+  var item = document.querySelector('#colorSwatch')
   for(var i=0; i < result.length; i++) {
     addForm(result[i])
   }
@@ -57,19 +57,6 @@ function onLoad() {
     }
 }
 
-const btnAddToCart = document.getElementById('AddToCart');
-btnAddToCart.addEventListener('click', addProdToCart);
-
-function addProdToCart() {
-  event.preventDefault()
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://neto-api.herokuapp.com/cart');
-  xhr.addEventListener('load', () => JSON.parse(xhr.response) );
-  const form = new FormData();
-  form.append('productId', '2721888517');
-  xhr.send(form);
-};
-
 const xhr2 = new XMLHttpRequest();
 xhr2.open('GET', 'https://neto-api.herokuapp.com/cart/sizes');
 xhr2.send();
@@ -77,8 +64,7 @@ xhr2.addEventListener('load', onLoadSizes);
 
 function onLoadSizes(data) {
   var resultSizes = JSON.parse(xhr2.response)
-  console.log(resultSizes);
-  var item = document.querySelector('#sizeSwatch > div');
+  var item = document.querySelector('#sizeSwatch');
   for(var i=0; i < resultSizes.length; i++) {
     addFormSizes(resultSizes[i])
   }
@@ -114,11 +100,56 @@ function onLoadSizes(data) {
     img.className ='crossed-out';
     img.setAttribute('src', 'https://neto-api.herokuapp.com/hj/3.3/cart/soldout.png?10994296540668815886');
     label.appendChild(img)
-    console.log(item);
+    item2.addEventListener('click', e => {
+      input.setAttribute('checked', 'checked');
+    })
   }
+};
 
+const btnAddToCart = document.getElementById('AddToCart'); // кнопка
+btnAddToCart.addEventListener('click', addProdToCart);
 
+function addProdToCart() {
+  event.preventDefault()
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', 'https://neto-api.herokuapp.com/cart');
+  xhr.addEventListener('load', () => {
+    let data = JSON.parse(xhr.response);
+    console.log(data[0]);
+   addSnipetCart(data[0])
+  });
+  const form = new FormData();
+  form.append('productId', '2721888517');
+  form.append('quantity', '1');
+  xhr.send(form);
+};
 
+function addSnipetCart(data) {
+  let item = document.getElementById('quick-cart');
+  let text =
+`<div class="quick-cart-product quick-cart-product-static" id="quick-cart-product-${data.id}" style="opacity: 1;">
+  <div class="quick-cart-product-wrap">
+    <img src="${data.pic}" title="${data.title}">
+    <span class="s1" style="background-color: #000; opacity: .5">$800.00</span>
+    <span class="s2"></span>
+  </div>
+  <span class="count hide fadeUp" id="quick-cart-product-count-${data.id}">${data.quantity}</span>
+  <span class="quick-cart-product-remove remove" data-id="${data.id}"></span>
+</div>`;
+item.innerHTML = text;
 
-
+let quick = document.createElement('a');
+quick.id='quick-cart-pay';
+quick.setAttribute('quickbeam', 'cart-pay');
+quick.className='cart-ico';
+if(data.quantity>0) {
+  quick.classList.add('open')
+}
+let span =
+  `<span>
+    <strong class="quick-cart-text">Оформить заказ<br></strong>
+    <span id="quick-cart-price">$${data.price}</span>
+  </span>`;
+  quick.innerHTML = span;
+  item.appendChild(quick);
 }
