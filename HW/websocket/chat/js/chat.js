@@ -3,13 +3,13 @@ const connection = new WebSocket('wss://neto-api.herokuapp.com/chat');
 let chatStatus = document.querySelector('.chat-status');
 let messageSubmit = document.querySelector('.message-submit');
 let messageStatus = document.querySelector('.message-status');
-let messagesContent = document.querySelector('.messages-content');
+//let messagesContent = document.querySelector('.messages-content');
 let messageInput = document.querySelector('.message-input');
 
 let message = document.getElementsByClassName('message')[1];
 let messagePersonal = document.getElementsByClassName('message')[2];
 
-let timestamp = document.querySelectorAll('.timestamp')
+
 
 const messages = document.getElementsByClassName('message');
 let createData = function () {
@@ -26,23 +26,44 @@ connection.addEventListener('open', () => {
 	messageStatus.innerHTML = 'Пользователь появился в сети';
 })
 
+messageSubmit.addEventListener('click', (event) => {
+	event.preventDefault()
+	let arr = Array.from(document.querySelector('.messages-content').children)
+	if(arr.length > 2) {
+		document.querySelector('.messages-content').children[0].remove()
+	};
+	let clone = messagePersonal.cloneNode(true)
+	let timestamp = clone.querySelector('.timestamp')
+	clone.querySelector('.message-text').innerHTML = messageInput.value
+	timestamp.innerHTML = createData()
+	connection.send(JSON.stringify(messageInput.value))
+	messageInput.value = ''
+	document.querySelector('.messages-content').appendChild(clone)
+})
+
 connection.addEventListener('message', (event) => {
-	message.querySelector('.message-text').innerHTML = event.data
-	timestamp[0].innerHTML = createData()
-	if(message.innerHTML === '...') {
+	let clone = message.cloneNode(true)
+	let timestamp = clone.querySelector('.timestamp')
+	clone.querySelector('.message-text').innerHTML = event.data
+	timestamp.innerHTML = createData()
+	if(clone.innerHTML === '...') {
 		document.getElementsByClassName('message')[0].innerHTML = 'Собеседник печатает сообщение';
 	} else {
 		document.getElementsByClassName('message')[0].innerHTML = ''
 	}
+	document.querySelector('.messages-content').appendChild(clone)
 })
 
-messageSubmit.addEventListener('click', (event) => {
-	event.preventDefault()
-	messagePersonal.querySelector('.message-text').innerHTML = messageInput.value
-	timestamp[1].innerHTML = createData()
-	connection.send(JSON.stringify(messageInput.value))
-	messageInput.value = ''
-})
+
+
+
+
+
+
+
+
+
+
 
 connection.onclose = () => {
 	chatStatus.innerHTML = chatStatus.dataset.offline;
@@ -57,12 +78,3 @@ connection.addEventListener('error', error => {
 	messageSubmit.setAttribute('disabled', 'disabled')
 	messageStatus.innerHTML = 'Пользователь не в сети';
 });
-
-function addtomessagesContent(o, p,m) {
-	document.querySelector('.messages-content').appendChild(o)
-	document.querySelector('.messages-content').appendChild(p)
-	document.querySelector('.messages-content').appendChild(m)
-	return document.querySelector('.messages-content');
-}
-
-console.log(addtomessagesContent(messageStatus, message, messagePersonal))
