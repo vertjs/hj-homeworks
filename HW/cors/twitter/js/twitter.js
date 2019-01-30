@@ -1,21 +1,23 @@
 'use strict';
 
-const container = document.querySelector('.container');
-const background = document.querySelector('.bg');
-const username = document.dataset('data-username');
-console.log("data-wallpaper", background);
+function addScript(src) {
+  var elem = document.createElement("script");
+  elem.setAttribute("type", "text/javascript");
+  elem.src = src;
+  document.head.appendChild(elem);
+  return console.log(elem);
+}
+addScript('https://neto-api.herokuapp.com/twitter/jsonp');
 
-function parseData(data) {
-	background.src = data.wallpaper
-
+function callback(data) {
+	document.querySelector('[data-wallpaper]').src = data.wallpaper;
+	document.querySelector('[data-username]').innerHTML = data.username;
+	document.querySelector('[data-description]').innerHTML = data.description;
+	document.querySelector('[data-pic]').src = data.pic;
+	document.querySelector('[data-tweets]').innerHTML = data.tweets;
+	document.querySelector('[data-followers]').innerHTML = data.followers;
+	document.querySelector('[data-following]').innerHTML = data.following;
+	
 }
 
-console.log(parseData({"username":"@carlf","description":"Carl Fredricksen is the protagonist in Up. He also appeared in Dug's Special Mission as a minor character.","tweets":2934,"followers":1119,"following":530,"wallpaper":"https://neto-api.herokuapp.com/hj/4.1/twitter/up.jpg","pic":"https://neto-api.herokuapp.com/hj/4.1/twitter/carl.jpg"}))
-
-
-function loadData(url) {
-	return new Promise((done, fail) => {
-
-});
-}
-
+callback(addScript)
