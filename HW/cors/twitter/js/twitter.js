@@ -17,7 +17,7 @@ function callback(data) {
 	document.querySelector('[data-tweets]').innerHTML = data.tweets;
 	document.querySelector('[data-followers]').innerHTML = data.followers;
 	document.querySelector('[data-following]').innerHTML = data.following;
-	
+
 }
 
 callback(addScript)
