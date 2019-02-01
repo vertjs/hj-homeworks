@@ -34,8 +34,10 @@ function addConsumers(data) {
     let i = document.createElement("img");
     i.src = data.consumers[key].pic;
     i.title = data.consumers[key].name;
-    console.log(i);
     document.querySelector('[data-consumers]').appendChild(i)
   }
-
+  let span = document.createElement("span");
+  span.textContent = `(+${data.total})`;
+  document.querySelector('[data-consumers]').appendChild(span)
+  console.log(span);
 }
