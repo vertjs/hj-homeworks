@@ -7,7 +7,6 @@ function addScript(callbackName, url) {
     elem.src = `${url}?callback=${callbackName}`;
     document.body.appendChild(elem);
     window.callbackName = done;
-    console.log(callbackName, url);
   })
 };
 
@@ -23,7 +22,10 @@ function recipe(data) {
 addScript('addRating', 'https://neto-api.herokuapp.com/food/42/rating');
 
 function addRating(data) {
-  document.querySelector('[data-rating]').textContent = data.rating;
+  let num = data.rating.toFixed(2)
+  let stars = document.querySelector('[data-star]');
+  stars.style.width = num * 100/10 +'px'
+  document.querySelector('[data-rating]').textContent = num;
   document.querySelector('[data-votes]').textContent = `(${data.votes} Оценок)`;
 };
 
@@ -39,5 +41,4 @@ function addConsumers(data) {
   let span = document.createElement("span");
   span.textContent = `(+${data.total})`;
   document.querySelector('[data-consumers]').appendChild(span)
-  console.log(span);
 }
