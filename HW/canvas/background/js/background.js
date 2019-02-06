@@ -1,10 +1,10 @@
-function rand(min, max) {
+function getRandomArbit(min, max) {
   return max * Math.random() + min;
 }
 
 class Shape { // форма
   constructor() {
-    this.size = rand(0.1, 0.6);
+    this.size = getRandomArbit(0.1, 0.6);
     this.strokeColor = 'white';
     this.strokeWidth = 5 * this.size;
   }
@@ -28,8 +28,8 @@ class Cross extends Shape {
   constructor() {
     super();
     this.side = 20 * this.size;
-    this.angle = rand(0, 360);
-    this.speed = rand(-0.2, 0.2);
+    this.angle = getRandomArbit(0, 360);
+    this.speed = getRandomArbit(-0.2, 0.2);
   }
 
   nextPoint(x, y, time) {
@@ -40,34 +40,29 @@ class Cross extends Shape {
   }
 }
 
-const canvas = document.getElementById('wall'),
-      ctx = canvas.getContext('2d'),
-      objs = [Cross, Cross];
+const canvas = document.getElementById('wall');
+var ctx = canvas.getContext('2d');
+var objs = [Cross, Circle];
 
 canvas.setAttribute('width', getComputedStyle(canvas).width);
 canvas.setAttribute('height', getComputedStyle(canvas).height);
 
-for(let i = 0; i < rand(50, 200); i++) {
-  console.log(1);
-  var shape = objs[Math.round(rand(0,1))],
-        X = rand(0,canvas.width),
-        Y = rand(0,canvas.height);
-  ctx.beginPath();
-
-  if(shape instanceof Circle) {
-    ctx.arc(X, Y, shape.radius, 0, 2*Math.PI, true);
-  }
-  if(shape == Cross) {
+for(let i = 0; i < getRandomArbit(50, 200); i++) {
+  if(i % 2 == 0 ) {
+    console.log(1);
+    var shapeCross = objs[0];
+    var shapeCircle = objs[1];
+    var X = getRandomArbit(0, canvas.width);
+    var Y = getRandomArbit(0, canvas.height);
+    ctx.beginPath();
+    ctx.arc(X, Y, getRandomArbit(0.1, 0.6)*12, 0, 2*Math.PI, true);
     drawCross(X,Y);
-    //setInterval(drawCross,20);
+    setInterval(drawCross,20);
+    ctx.stroke();
   }
-
-  ctx.stroke();
-
-}
+};
 
 function drawCross(x,y) {
-  //let {w, h} = shape.nextPoint(x,y, new Date());
   const shap = new Cross();
   ctx.lineWidth = shap.strokeWidth;
   ctx.strokeStyle = shap.strokeColor;
