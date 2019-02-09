@@ -1,4 +1,4 @@
-
+'use strict';
 const slide = document.querySelectorAll('.slide');
 const nav = document.querySelector('.slider-nav');
 const button = document.querySelectorAll('.slider-nav > a');
@@ -11,58 +11,56 @@ function flippingSlide(event) {
   let activeSlide = document.querySelector('.slide-current');
   let buttonClicked = event.target.dataset.action;
 
-  if (event.target.classList.contains('disabled')) {
+  /*if (event.target.classList.contains('disabled')) {
+        activeSlide.classList.remove('slide-current');
     return;
-  }
+  }*/
   if (buttonClicked === 'first') {
     activeSlide.classList.remove('slide-current');
     slides[0].classList.add('slide-current');
   }
   else if (buttonClicked === 'prev') {
-    activeSlide.classList.remove('slide-current');
+activeSlide.classList.remove('slide-current');
     activeSlide.previousElementSibling.classList.add('slide-current');
   }
   else if (buttonClicked === 'next') {
     activeSlide.classList.remove('slide-current');
     activeSlide.nextElementSibling.classList.add('slide-current');
+    console.log(activeSlide);
+    console.log(activeSlide.nextElementSibling);
+    console.log(activeSlide.nextElementSibling.nextElementSibling);
+    event.target.classList.toggle('disabled', !activeSlide.nextElementSibling.nextElementSibling);
   }
   else if (buttonClicked === 'last') {
     activeSlide.classList.remove('slide-current');
     slides[slides.length - 1].classList.add('slide-current');
+    event.target.classList.add('disabled');
+    buttons[1].classList.add('disabled');
   }
   activateSlide();
 };
 
 function activateSlide() {
-  let activeSlide = document.querySelector('.slide-current');
 
+  let activeSlide = document.querySelector('.slide-current');
   if (!activeSlide) {
     slides[0].classList.add('slide-current');
     activeSlide = slides[0];
  }
-
   if (!activeSlide.previousElementSibling) {
-    disableButtons(buttons, true);
+    buttons[0].classList.toggle('disabled');
+    buttons[2].classList.toggle('disabled');
+  //  buttons[1].classList.remove('disabled');
+  //  buttons[3].classList.remove('disabled');
   } else if (!activeSlide.nextElementSibling) {
-    disableButtons(buttons, false);
+  //  buttons[1].classList.toggle('disabled');
+//    buttons[3].classList.toggle('disabled', !activeSlide);
+    buttons[0].classList.remove('disabled');
+    buttons[2].classList.remove('disabled');
   } else {
     for (let button of buttons) {
       button.classList.remove('disabled');
     }
   }
-
 };
-
-function disableButtons(buttons, bool) {
-  const ev = bool ? 0 : 1;
-  buttons.forEach((button, i) => {
-    if ((i + ev) % 2 === 0) {
-      button.classList.add('disabled');
-    }
-    else {
-      button.classList.remove('disabled');
-    }
-  })
-};
-
 activateSlide();
