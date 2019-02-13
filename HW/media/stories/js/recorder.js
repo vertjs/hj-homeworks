@@ -1,5 +1,4 @@
 'use strict';
-
 if (navigator.mediaDevices === undefined) {
   navigator.mediaDevices = {};
 }
@@ -38,68 +37,47 @@ function createThumbnail(video) {
 
 const video = document.querySelector('.stories__action__video');
 
-function record(app) {
+function record(app, config = app.config, limit = app.limit) {
   return new Promise((done, fail) => {
     app.mode = 'preparing';
 
-    setTimeout(() => {
-      fail('Не удалось записать видео');
-    }, app.limit);
-  })
-
-  .then(
     window.navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: true
-    }))
-  .then((stream) => {
-    video.srcObject = stream;
-    video.style.display = 'block';
-    console.log(stream);
-    video.onloadedmetadata = ()=> video.play();
-    /*let recorder = new MediaRecorder(stream);
-    let chunks = [];
-    recorder.addEventListener('dataavailable', e => {
-      chunks.push(e.data);
-    });
-    recorder.addEventListener('stop', (e) => {
-    let recorded = new Blob(chunks);
-  })*/
-  })
+        video: true,
+        audio: false
+      })
+      .then((stream) => {
+        video.srcObject = stream;
+        video.onloadedmetadata = ()=> video.play();
+        video.style.display = 'block';
 
+        setTimeout(() => {
+          app.mode = 'recording';
+          app.preview.srcObject = stream;
+          let recorder = new MediaRecorder(stream);
+          let chunks = [];
+          recorder.start();
+
+          recorder.addEventListener('dataavailable', event => chunks.push(event.data));
+
+          recorder.addEventListener('stop', event => {
+            recorded = new Blob(chunks, {
+              'type': recorder.mimeType
+            });
+          })
+        })
+      })
+
+      .then(() => {
+        setTimeout(() => {
+          app.mode = 'sending';
+          app.preview.srcObject = null;
+          recorder.stop();
+          stream.getVideoTracks().map(track => track.stop());
+        }, limit);
+      })
+
+      .catch(err => fail(err));
+  });
 }
 
-let arg = {mode: 'config', limit: 3000}
-record(arg)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//record()
+record(createThumbnail)
