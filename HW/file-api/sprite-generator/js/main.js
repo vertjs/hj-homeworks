@@ -25,6 +25,7 @@ class SpriteGenerator {
 
   loadImage(event) {
     const files = Array.from(event.target.files);
+    console.log(files);
     for(var file of files) {
       if(file.type.includes('image')) {
         this.images.push(file);
@@ -50,9 +51,9 @@ class SpriteGenerator {
       dups.push(dupNode);
     }
 
-      dups[0].addEventListener('load', drow);
+      dups[0].addEventListener('load', draw);
 
-      function drow() {
+      function draw() {
         ctx.drawImage(dups[0], 0, 0, 50, 50);
         var k=0;
         for(var n = 1; n < dups.length; n++) {
